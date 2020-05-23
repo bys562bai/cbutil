@@ -92,9 +92,49 @@ inline uint64_t varintLE_to_u64(uint8_t pvarint[]){
     }
 }
 
+inline uint8_t write_varintBE(uint64_t value, uint8_t dst[]){
+    static const uint8_t masks_table[9]= {0, 128, 192, 224, 240, 248, 252, 254, 255}; 
+/*
+l = []
+m = 0
+for i in range(8):
+    m|= 1<<7-i
+    l.append(m)
+*/
+    uint8_t len = u64_len(value);
+    uint8_t mask = masks_table[len];
+    len += mask & (value>>8*(len-1));
+    
+    const uint64_t write_mask = 0xFF;
+    for(int i = len-1; i>=0; i--){
+        dst[i] = value&write_mask;
+        value>>=8;
+    }
+    dst[0]|=masks_table[len-1];
+    return len;
+}
 
 
+inline uint8_t write_varintLE(uint64_t value, uint8_t dst[]){
+    static const uint8_t masks_table[9]= {0, 128, 192, 224, 240, 248, 252, 254, 255}; 
+    static const uint8_t low_masks_table[9] = {0, 1, 3, 7, 15, 31, 63, 127, 255};
+/*
+l = [0]
+m = 0
+for i in range(8):
+    m|= 1<<i
+    l.append(m)
+*/
+    uint8_t len = u64_len(value);
+    uint8_t mask = masks_table[len];
+    len += mask & (value>>8*(len-1));
+    value<<=len;
+    value|=low_masks_table[len];
 
-inline void write_varintBE(uint64_t value, uint8_t dst[]){
-
+    const uint64_t write_mask = 0xFF;
+    for(int i = 0; i<len; i++){
+        dst[i] = value&write_mask;
+        value>>=8;
+    }
+    return len;
 }
