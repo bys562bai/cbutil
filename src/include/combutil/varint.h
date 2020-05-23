@@ -7,7 +7,7 @@ fu8 首字节
 BE 数据段靠右，长度段靠左
 LE 数据段靠左，长度段靠右
 */
-
+namespace combutil{
 
 inline uint64_t read_uintBE(const uint8_t src[], uint8_t len){
     uint64_t ret = 0;
@@ -104,7 +104,7 @@ for i in range(8):
     uint8_t len = u64_len(value);
     uint8_t mask = masks_table[len];
     len += mask & (value>>8*(len-1));
-    
+
     const uint64_t write_mask = 0xFF;
     for(int i = len-1; i>=0; i--){
         dst[i] = value&write_mask;
@@ -137,4 +137,6 @@ for i in range(8):
         value>>=8;
     }
     return len;
+}
+
 }
