@@ -7,7 +7,7 @@ fu8 首字节
 BE 数据段靠右，长度段靠左
 LE 数据段靠左，长度段靠右
 */
-namespace combutil{
+namespace cbutil{
 
 inline uint64_t read_uintBE(const uint8_t src[], uint8_t len){
     uint64_t ret = 0;

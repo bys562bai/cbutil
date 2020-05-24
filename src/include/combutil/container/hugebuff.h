@@ -1,6 +1,6 @@
 #pragma once
 
-namespace combutil{
+namespace cbutil{
     struct HugeBuff{
         
     };
