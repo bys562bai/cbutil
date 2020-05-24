@@ -1,2 +1,2 @@
-# combutil
+# cbutil
 A combined utility library
