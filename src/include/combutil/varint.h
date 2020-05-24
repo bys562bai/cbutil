@@ -75,7 +75,8 @@ inline uint64_t varintBE_to_u64(uint8_t pvarint[]){
         return read_uintBE(pvarint+1, 8);
     }else{
         uint64_t ret = read_uintBE(pvarint, len);
-        ret&= masks[len]<<7*8;
+        uint64_t mask = masks[len];
+        ret&= mask<<7*8;
         return ret;
     }
 }
